@@ -1,0 +1,99 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+li,a:link,ul, ul, li{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+body{
+    background: #1f1e1f;
+    color: rgb(212, 212, 212);
+    font-family: 'Poppins', sans-serif;
+}
+
+.container{
+    max-width: 600px;    
+    min-height: 400px;    
+}
+
+.container .main-nav{
+    margin-top: 10px;
+    
+}
+
+
+.container .main-nav-items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container .main-nav-items .menu-item{
+    width: 20%;
+}
+
+
+.container .main-nav-items span{
+    width: 100%;
+    font-size: 12px;
+    color: #ddd;
+}
+
+.hide{
+    display: none;
+}
+
+.btn-active{
+    border: 1px solid rgb(180, 172, 172);
+    border-radius: 5px;
+}
+
+section{
+    width: 100%;   
+    margin-top: 20px;
+    background:#313031;
+    border-radius: 5px;
+}
+
+section h1{
+    font-family: inherit;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+}
+
+.show-add form{
+    padding-bottom: 30px;
+    font-size: 14px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+.add-item-subit-container{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 20px;
+
+}
+
+section input[type="text"]{
+    background-color:#6f6f6f;
+    border: none;
+    color: #fff;
+}
+
+section input[type="text"]:focus{
+    background-color:#6f6f6f;
+    border: none;
+    color: #fff;
+}
+section.show-add button[type="submit"]{
+    width: 100%;
+    
+    
+}

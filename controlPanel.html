@@ -1,11 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/fontawesome/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./src/css/controlPanel.css">
     <title>List overlay control panel</title>
 </head>
+
 <body>
-    
+    <div class="container">
+        <header class="main-header">
+            <nav class="main-nav">
+
+                <ul class="main-nav-items">
+
+                    <li id="show-add" class="menu-item menu-add-list-item">
+                        <span class="btn btn-sm btn-secondary"><i class="fas fa-plus"></i></span>
+                    </li>
+
+                    <li id="show-list" class="menu-item menu-list">
+                        <span class="btn btn-sm btn-secondary"><i class="fas fa-list"></i></span>
+                    </li>
+
+                    <li id="show-options" class="menu-item menu-options">
+                        <span class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i></span>
+                    </li>
+
+                </ul>
+
+            </nav>
+        </header>
+
+
+
+    <section class="show-add">
+        <h1>Add item</h1>
+
+        <form>
+
+            <div class="input-group-sm mb-3">
+
+              <label for="add-item-field-1" class="form-label">Field-1</label>
+              <input type="text" class="form-control input-group-sm" id="add-item-field-1">
+              
+            </div>
+
+            <div class="mb-3 input-group-sm">
+              <label for="add-item-field-2" class="form-label">field-2</label>
+              <input type="text" class="form-control" id="add-item-field-2">
+            </div>
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Higlight</label>
+            </div>
+
+            <div class="add-item-subit-container">
+                <button type="submit" class="btn btn-sm btn-secondary">Add <i class="fas fa-file-import"></i></button>
+            </div>
+
+            
+
+          </form>
+
+
+    </section>
+
+    <section class="show-list hide">
+        <h1>List</h1>
+
+    </section>
+
+    <section class="show-options hide">
+        <h1>Options</h1>
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <script src="./src/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./src/fontawesome/js/fontawesome.all.min.js"></script>
+    <script src="./src/js/controlPanel.js"></script>
 </body>
+
 </html>
