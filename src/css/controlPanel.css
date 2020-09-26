@@ -15,6 +15,13 @@ body{
     font-family: 'Poppins', sans-serif;
 }
 
+span.spotlight{
+    color: #c49cd4;
+}
+
+
+
+
 .container{
     max-width: 600px;    
     min-height: 400px;    
@@ -66,7 +73,7 @@ section h1{
     padding: 5px;
 }
 
-.show-add form{
+section form{
     padding-bottom: 30px;
     font-size: 14px;
     width: 80%;
@@ -74,7 +81,7 @@ section h1{
 }
 
 
-.add-item-subit-container{
+.add-item-subit-container, .options-change-fields-container{
     width: 50%;
     margin: 0 auto;
     margin-top: 20px;
@@ -92,8 +99,24 @@ section input[type="text"]:focus{
     border: none;
     color: #fff;
 }
-section.show-add button[type="submit"]{
+
+button[type="submit"]{
     width: 100%;
     
     
 }
+
+section.show-options h3{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+section.show-options .change-fields-name{
+    border-bottom: 2px solid rgba( 255,255,255, .2 );
+    padding-bottom: 20px;
+}
+
+section.show-options .change-fields-name #options-change-fields{
+    margin-top: 10px;
+}
+
