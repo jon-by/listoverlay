@@ -73,11 +73,12 @@ section h1{
     padding: 5px;
 }
 
-section form{
+section form, section.show-list table{
     padding-bottom: 30px;
     font-size: 14px;
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
+    
 }
 
 
@@ -119,4 +120,7 @@ section.show-options .change-fields-name{
 section.show-options .change-fields-name #options-change-fields{
     margin-top: 10px;
 }
+
+
+
 
