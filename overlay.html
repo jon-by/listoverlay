@@ -4,30 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/fontawesome/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./src/css/overlay.css">
     <title>List overlay</title>
 </head>
-
 <body>
 
+<div id="main-container">
+    
+    <div class="table-responsive" id="table-container">
+        <div id="list-title"></div>
+        <table class="table table-striped  table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" id="list-head-first-field"></th>
+                    <th scope="col" id="list-head-second-field"></th>
+                    
+                </tr>
+            </thead>
+            <tbody id="list-body">
+                            
+            </tbody>
+        </table>
 
+       <br>
 
+    </div>
+</div>
 
-
-
-    <script>
-
-        const tabComunication = new BroadcastChannel('LO_tabComunication')
-
-
-        tabComunication.onmessage = function (e) {
-
-            console.log('Received', e.data);
-
-            alert("deu")
-
-        };
-
-    </script>
+<script src="./src/bootstrap/js/bootstrap.min.js"></script>
+<script src="./src/fontawesome/js/fontawesome.all.min.js"></script>
+<script src="./src/js/overlay.js"></script>
 </body>
 
 </html>

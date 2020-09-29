@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./src/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="./src/fontawesome/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="./src/css/controlPanel.css">
+    <link rel="stylesheet" href="./src/css/color-pickernano.min.css">
     <title>List overlay control panel</title>
 </head>
 
@@ -67,94 +68,234 @@
 
         </section>
 
-            <section class="show-list hide">
-                
-
-                <h1>List</h1>
-
-                <div class="table-responsive">
-                    <table class="table table-striped table-secondary table-borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col"> </th>
-                                <th scope="col" id="list-head-first-field"></th>
-                                <th scope="col" id="list-head-second-field"></th>
-                                <th scope="col" id="list-head-higlight-field"> </th>
-                            </tr>
-                        </thead>
-                        <tbody id="list-body">
-                           
-                            
-                        </tbody>
-                    </table>
-
-                   <br>
-    
-                </div>
+        <section class="show-list hide">
 
 
+            <h1 id="list-title"></h1>
 
-            </section>
+            <div class="table-responsive">
+                <table class="table table-striped table-secondary table-borderless">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col" id="list-head-first-field"></th>
+                            <th scope="col" id="list-head-second-field"></th>
+                            <th scope="col" id="list-head-higlight-field"> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-body">
+
+
+                    </tbody>
+                </table>
+
+                <br>
+
+            </div>
+
+
+
+        </section>
 
         <section class="show-options hide">
-            <h1>Options</h1>
-
+            <!--h1>Options</h1-->
             <form>
-                <div class="change-fields-name">
+                <div class="savewarning">
+                    <small>don't forget to save your changes at the bottom of the page</small>
+                </div>
 
-                    <h3>Change fields name</h3>
+                <div class="change overlay-sizes">
+                    <h1>Screen</h1>
                     <div class="input-group-sm mb-3">
+                        <label for="options-change-screen-width" id="lb-change-overlay-width" class="form-label">
+                            Screen width
+                        </label>
+                        <input type="number" value="1920" class="form-control input-group-sm" id="options-change-screen-width">
+                    </div>
 
+                    <div class="mb-3 input-group-sm">
+                        <label for="options-change-screen-height" id="lb-change-overlay-height" class="form-label">
+                            Screen height
+                        </label>
+                        <input type="number" value="1080" class="form-control input-group-sm" id="options-change-screen-height">
+                    </div>
+
+                    <div class="mb-3 input-group-sm">
+                        <label for="options-change-screen-bg-color" id="lb-change-screen-bg-color" class="form-label">
+                            Screen background color
+                        </label>
+
+                        <input  class="pickr form-control input-group-sm" id="options-change-screen-bg-color">
+
+                    </div>
+
+                    <hr>
+                    <h1>List</h1>
+                    <div class="mb-3 input-group-sm">
+                        <label for="options-change-list-width" id="lb-change-list-width" class="form-label">
+                            List width
+                        </label>
+                        <input type="number" value="1920" class="form-control input-group-sm" id="options-change-list-width">
+                    </div>
+
+                    <div class="mb-3 input-group-sm">
+                        <label for="options-change-list-height" id="lb-change-list-height" class="form-label">
+                            List height
+                        </label>
+                        <input type="number" value="1080" class="form-control input-group-sm" id="options-change-list-height">
+                    </div>
+
+                    <div class="mb-3 input-group-sm">
+                        <label for="options-change-list-bg-color" id="lb-change-list-bg-color" class="form-label">
+                            List background color
+                        </label>
+
+                        <input  class="pickr form-control input-group-sm" id="options-change-list-bg-color">
+
+                        <hr>
+
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="options-list-vertical-position">List column position</label>
+                            <select class="form-select" id="options-list-vertical-position">
+                              <option value="center" selected>center</option>
+                              <option value="left">Left</option>
+                              <option value="right">Right</option>                              
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="options-list-horizontal-position">List line position </label>
+                            <select class="form-select" id="options-list-horizontal-position">
+                              <option value="top" selected>Top</option>
+                              <option value="center">Center</option>
+                              <option value="bottom">Bottom</option>
+                              
+                            </select>
+                        </div>
+                        <hr>
+                        <h1>List title</h1>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="options-list-title-active">
+                            <label class="form-check-label" for="options-list-title-active">Show title</label>
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-change-list-title-text" id="lb-change-list-title-text" class="form-label">
+                                Title text
+                            </label>
+                            <input type="text" class="form-control input-group-sm" id="options-change-list-title-text">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-change-list-title-font-size" id="lb-change-list-title-font-size" class="form-label">
+                                Title Font size
+                            </label>
+
+                            <input type="text" class="form-control input-group-sm" id="options-change-list-title-font-size">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-change-list-title-font-color" id="lb-change-list-title-font-color" class="form-label">
+                                Title font color
+                            </label>
+
+                            <input  class="pickr form-control input-group-sm" id="options-change-list-title-font-color">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-change-list-title-bg-color" id="lb-change-list-title-bg-color" class="form-label">
+                                Title background color
+                            </label>
+
+                            <input  class="pickr  form-control input-group-sm" id="options-change-list-title-bg-color">
+                        </div>
+
+                        <hr>
+
+                        <h1>List Items</h1>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-change-list-item-color" id="lb-change-list-item-color" class="form-label">
+                                Items default color
+                            </label>
+
+                            <input class="pickr form-control input-group-sm" id="options-change-list-item-color">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-list-item-font-size" id="lb-change-list-item-font-size" class="form-label">
+                                Item font size
+                            </label>
+                            <input type="number" value="18" class="form-control input-group-sm" id="options-list-item-font-size">
+                        </div>
+
+                        <hr>
+
+                        <h1>Higlight</h1>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-higlight-font-size" id="lb-options-higlight-font-size" class="form-label">
+                                Higlight font size
+                            </label>
+                            <input type="number" value="18" class="form-control input-group-sm" id="options-higlight-font-size">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-higlight-font-color" id="lb-options-higlight-font-color" class="form-label">
+                                Higlight font color
+                            </label>
+
+                            <input  class="pickr form-control input-group-sm" id="options-higlight-font-color">
+                        </div>
+
+                        <div class="mb-3 input-group-sm">
+                            <label for="options-higlight-bg-color" id="lb-options-higlight-bg-color" class="form-label">
+                                Higlight background color
+                            </label>
+
+                            <input  class="pickr form-control input-group-sm" id="options-higlight-bg-color">
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- size  options-->
+
+                <div class="change fields-name">
+                    <h1>Fields name</h1>
+                    <div class="input-group-sm mb-3">
                         <label for="options-change-field-1" id="options-lb-field-1" class="form-label">
                             <span class="spotlight"></span> to:
                         </label>
                         <input type="text" class="form-control input-group-sm" id="options-change-field-1">
-
                     </div>
-
                     <div class="mb-3 input-group-sm">
                         <label for="options-change-field-2" id="options-lb-field-2" class="form-label">
                             <span class="spotlight"></span> to:
                         </label>
                         <input type="text" class="form-control input-group-sm" id="options-change-field-2">
                     </div>
-
                     <div class="mb-3 input-group-sm">
                         <label for="options-change-higlight" id="options-lb-higlight" class="form-label">
                             <span class="spotlight"></span> to:
                         </label>
                         <input type="text" class="form-control input-group-sm" id="options-change-higlight">
                     </div>
-
-
-
                     <div class="options-change-fields-container">
-                        <button type="submit" id="options-change-fields" class="btn btn-sm btn-secondary">Change <i
+                        <button type="button" id="options-change-fields" class="btn btn-sm btn-secondary">Save changes <i
                                 class="fas fa-check"></i></button>
                     </div>
-
                 </div>
-
-
-
+                <!-- Fields name options -->
 
             </form>
 
 
 
+
+
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -170,6 +311,8 @@
 
     <script src="./src/bootstrap/js/bootstrap.min.js"></script>
     <script src="./src/fontawesome/js/fontawesome.all.min.js"></script>
+    <!--script src="./src/js/jscolor.js"></script-->
+    <script src="./src/js/color-pickr.min.js"></script>
     <script src="./src/js/controlPanel.js"></script>
 </body>
 
