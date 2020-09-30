@@ -1,16 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
+
 #main-container{
     display: flex;
-    justify-content: left;
-    align-items: center;
+    /* justify-content: left;
+    align-items: center; */
 }
-
+#main-container div.table-responsive{
+    overflow: hidden !important;
+}
 #table-container table{
     max-width: 100%;
     text-align: center;
+    overflow: hidden;
+    
     
 }
+
+
 #list-title{
     text-align: center;    
     font-family: 'Poppins', sans-serif;    
@@ -21,3 +28,6 @@
 }
 
 
+.list-item{
+    font-weight: bolder;
+}

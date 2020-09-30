@@ -8,23 +8,25 @@ window.onload = () => {
     var listSecondField = document.querySelector('#list-head-second-field')
     var tableBody = document.querySelector('#list-body')
     var tableContainer = document.querySelector('#table-container')
+    var higlights = () => document.querySelectorAll('.higlight')
+    var listItens = () => document.querySelectorAll('.list-item')
 
     
 
     function drawOverlayList() {    
-
+        let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
         let list = getDataFromStorage(`${storagePrefix}list`)
-        let {firstFieldName, secondFieldName, title } = getDataFromStorage(`${storagePrefix}fields`) 
+        let { firstFieldName, secondFieldName } = getDataFromStorage(`${storagePrefix}fields`) 
         let tableBodyHTML = ``       
 
-        listTitle.textContent = title
+        listTitle.textContent = options.listTitle.titleText
         listFirstField.textContent = firstFieldName
         listSecondField.textContent = secondFieldName 
         
         
         list.forEach( (listItem, index ) => {
             tableBodyHTML += `
-                <tr ${listItem.higlight ? `class="higlight"` : ''}>
+                <tr class="list-item ${listItem.higlight ? 'higlight' : ''}">
                     <th scope="row">${parseInt(index) +1}</th>                     
                     <td>${listItem.firstField}</td>
                     <td>${listItem.secondField}</td>                    
@@ -34,46 +36,80 @@ window.onload = () => {
         
         tableBody.innerHTML = tableBodyHTML
 
-    applyStyle()
+        applyStyle()
     }
 
 
 
-    function applyStyle(){
+    function applyStyle(){      
 
-        let options = getDataFromStorage( `${storagePrefix}overlayOptions` )
-
-        let { overlayWidth, overlayHeight,overlayBGcolor } = options.container
-        let {titleBgcolor, titleFontSize, titleFontColor, titlePadding} = options.title       
-
+        let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
+               
+ 
         // container
-        mainContainer.style.minWidth = `${overlayWidth}px`
-        mainContainer.style.minHeight = `${overlayHeight}px`
-        mainContainer.style.backgroundColor = overlayBGcolor
+        mainContainer.style.maxWidth = `${options.screen.screenWidth}px`
+        mainContainer.style.maxHeight = `${options.screen.screenHeight}px`
+        mainContainer.style.minWidth = `${options.screen.screenWidth}px`
+        mainContainer.style.minHeight = `${options.screen.screenHeight}px`
+        mainContainer.style.backgroundColor = options.screen.screenBgcolor
 
         // table container
-        tableContainer.style.width = '400px'
-        tableContainer.style.height = '400px'
-        tableContainer.style.backgroundColor = 'red'
-        //tableContainer.style.maxWidth = '100px'
+        tableContainer.style.width = `${options.list.listWidht}px`
+        tableContainer.style.height = `${options.list.listHeight}px`
+        tableContainer.style.backgroundColor = options.list.listBgColor
+        //use main but set table container
+        mainContainer.style.justifyContent = options.list.listColumnPosition
+        mainContainer.style.alignItems = options.list.listLinePosition
+
+
+        listItens().forEach(element =>{
+            element.style.color = options.listItems.itemsDefaultColor
+        })       
+       tableBody.style.fontSize = `${options.listItems.itemsFontSize}pt`
+
+
+       higlights().forEach(element =>{
+        element.style.fontSize = `${options.higlight.higlightFontSize}pt` 
+        element.style.color = options.higlight.higlightFontColor
+        element.style.backgroundColor  = options.higlight.higlightBgColor
+    })
+
+
+       
+    
+        
+       // console.log()
+       
 
         // title
-        listTitle.style.backgroundColor =  titleBgcolor
-        listTitle.style.fontSize =  `${titleFontSize}pt`
-        listTitle.style.color =  titleFontColor
-        listTitle.style.padding =  `${titlePadding}px`       
+        options.listTitle.showTitle? listTitle.style.display = 'block':  listTitle.style.display = 'none'
+        listTitle.style.backgroundColor =  options.listTitle.titleBgColor
+        listTitle.style.fontSize =  `${options.listTitle.titleFontSize }pt`
+        listTitle.style.color =  options.listTitle.titleFontColor
+       // listTitle.style.padding =  `${titlePadding}px`       
     }
 
 
+    function getDataFromStorage(name) {
+        try {
+            if (localStorage.getItem(name)) {
+                let data = JSON.parse(localStorage.getItem(name))
+                return data
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    tabComunication.onmessage = function(e) {
+       let type = e.data.type
+       drawOverlayList()
+        console.log(type)
+    };
    
 
     //localStorage.clear()
-    drawOverlayList()
-
-
-
-    tabComunication.onmessage = function(e) {
-        console.log('Received', e.data);
-      };
-   
+    drawOverlayList()   
 }

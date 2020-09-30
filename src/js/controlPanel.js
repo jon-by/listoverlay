@@ -35,8 +35,9 @@ window.onload = () => {
         const elementColorPicker = document.querySelectorAll('.pickr')
         
 
-        var menuItems = document.querySelectorAll('.menu-item')
+        const menuItems = document.querySelectorAll('.menu-item')
         var bodySections = document.querySelectorAll('section')
+        var allInputs = document.querySelectorAll('.check-change')
 
         // add item page
         var addItemFieldName_1 = document.querySelector('#first-field-name')
@@ -89,20 +90,16 @@ window.onload = () => {
         var newFielHiglight = () => document.querySelector('#options-change-higlight')
         var btn_optionsChange = document.querySelector('#options-change-fields')
 
-
         function updatePanelInterface() {
             let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
-            let { firstFieldName, secondFieldName, higlight, title } = getDataFromStorage(`${storagePrefix}fields`)
-
-
-
+            let { firstFieldName, secondFieldName, higlight } = getDataFromStorage(`${storagePrefix}fields`)
+            console.log(options)
             // add item page
             addItemFieldName_1.textContent = firstFieldName
             addItemFieldName_2.textContent = secondFieldName
             addHiglightSwitch.textContent = higlight
 
-            // options page //
-            // screen
+            // options page //            
             screenWidth().value = options.screen.screenWidth
             screenHeight().value = options.screen.screenHeight
             screenBgColor().value = options.screen.screenBgcolor
@@ -119,6 +116,13 @@ window.onload = () => {
             titleFontColor().value = options.listTitle.titleFontColor 
             titleBgColor().value = options.listTitle.titleBgColor
 
+            itemDefaultColor().value = options.listItems.itemsDefaultColor
+            itemFontSize().value = options.listItems.itemsFontSize 
+            
+            higlightFontSize().value = options.higlight.higlightFontSize 
+            higlightFontColor().value = options.higlight.higlightFontColor
+            higlightBgColor().value = options.higlight.higlightBgColor
+
 
             optionsLabelField1().innerHTML = firstFieldName
             optionsLabelField2().innerHTML = secondFieldName
@@ -128,21 +132,29 @@ window.onload = () => {
             // list page
             listHeadFirstField.textContent = firstFieldName
             listHeadSecondField.textContent = secondFieldName
-            listTitle.textContent = title
+            listTitle.textContent = options.listTitle.titleText
                 //listHeadHiglightField.textContent = higlight
 
-            console.log(options.listTitle.showTitle)
-            loadColorPicker()
+            
+            
             showListItems()
+            
         }
-
 
 
         btn_optionsChange.onclick = event => {
             event.preventDefault()
 
+            saveChangedOptions()            
+        }
+
+
+
+        function saveChangedOptions(){
             let options = overlayOptions
             
+            
+
             options.screen.screenWidth = screenWidth().value
             options.screen.screenHeight = screenHeight().value
             options.screen.screenBgcolor = screenBgColor().value             
@@ -158,15 +170,31 @@ window.onload = () => {
             options.listTitle.titleFontSize = titleFontSize().value
             options.listTitle.titleFontColor = titleFontColor().value
             options.listTitle.titleBgColor = titleBgColor().value
-           
+
+            options.listItems.itemsDefaultColor = itemDefaultColor().value
+            options.listItems.itemsFontSize = itemFontSize().value 
+
+            options.higlight.higlightFontSize = higlightFontSize().value
+            options.higlight.higlightFontColor = higlightFontColor().value
+            options.higlight.higlightBgColor = higlightBgColor().value           
+            
+
             saveInStorage(`${storagePrefix}overlayOptions`, options)
 
-            console.log(activeTitle().checked)
-            updateFieldsName(newFieldName1().value, newFieldName2().value, newFielHiglight().value)
+           
+            updateFieldsName(
+                newFieldName1().value, 
+                newFieldName2().value, 
+                newFielHiglight().value
+            )
 
+            updatePanelInterface()
+
+            tabComunication.postMessage({
+                "type": "updateoverlay"
+            })
+            
         }
-
-
 
         function deleteControl() {
             let ItemDeleteControl = document.querySelectorAll('.control-delete')
@@ -228,6 +256,10 @@ window.onload = () => {
     }
 
     function updateFieldsName(firstFieldName, secondFieldName, higlight) {
+        if( firstFieldName == '' || secondFieldName == '' || higlight  == ''){
+            return false
+        }
+
         let newFieldsName = { firstFieldName, secondFieldName, higlight }
         saveInStorage(`${storagePrefix}fields`, newFieldsName)
         updatePanelInterface()
@@ -255,6 +287,10 @@ window.onload = () => {
 
         saveInStorage(`${storagePrefix}list`, list)
         updatePanelInterface()
+        
+        tabComunication.postMessage({
+            "type": "updateoverlay"
+        })
     }
 
     function addItemToList(firstField, secondField, higlight) {
@@ -263,6 +299,9 @@ window.onload = () => {
         list.push(item)
         saveInStorage(`${storagePrefix}list`, list)
         showListItems()
+        tabComunication.postMessage({
+            "type": "updateoverlay"
+        })
     }
 
     function removeItemFromList(index) {
@@ -270,6 +309,9 @@ window.onload = () => {
         list.splice(index, 1)
         saveInStorage(`${storagePrefix}list`, list)
         showListItems()
+        tabComunication.postMessage({
+            "type": "updateoverlay"
+        })
     }
 
     //menu 
@@ -294,6 +336,72 @@ window.onload = () => {
             }
         })
     }
+
+    allInputs.forEach( element =>{
+        element.onchange = () =>{
+            saveChangedOptions()
+        }
+    })
+
+    
+
+    // color picker
+    function loadColorPicker(){
+        elementColorPicker.forEach( element =>{
+            const pickr = new Pickr({
+                el: element,
+                useAsButton: true,
+                default: element.value,
+                theme: 'nano',     
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+        
+                    interaction: {
+                    hex: false,
+                    rgba: true,
+                    hsva: false,
+                    input: true,
+                    save: true
+                    }
+                }
+                }).on('init', pickr => {       
+                    let currentColor = element.value
+                    element.value = pickr.getSelectedColor().toRGBA().toString(0)
+                    element.style.backgroundColor =  currentColor                
+                }).on('save', color => {
+                    let pickedColor = pickr.getSelectedColor().toRGBA().toString(0)
+                    element.value = pickedColor
+                    element.style.backgroundColor = pickedColor
+                    pickr.hide();
+                    
+
+                }).on('hide', color => {
+                    let pickedColor = pickr.getColor().toRGBA().toString(0)
+                    element.value = pickedColor
+                    element.style.backgroundColor = pickedColor
+                    saveChangedOptions()      
+                })    
+                
+            })
+    }
+
+
+    // localstorage check
+    if (!getDataFromStorage(`${storagePrefix}list`)) {
+        let list = [{ "firstField": "Jon Doe", "secondField": "Have a nice day", "higlight": false }]
+        saveInStorage(`${storagePrefix}list`, list)
+    }
+
+    if (!getDataFromStorage(`${storagePrefix}fields`)) {
+        let fields = { "firstFieldName": "Requester", "secondFieldName": "Music", "higlight": "Extreme"}
+        saveInStorage(`${storagePrefix}fields`, fields)
+    }       
+
+    if (!getDataFromStorage(`${storagePrefix}overlayOptions`)) {        
+        saveInStorage(`${storagePrefix}overlayOptions`, overlayOptions)
+    }   
 
     //Storage
     function saveInStorage(name, data) {
@@ -323,65 +431,12 @@ window.onload = () => {
         }
     }
 
+    
 
-
-// color picker
-function loadColorPicker(){
-    elementColorPicker.forEach( element =>{
-        const pickr = new Pickr({
-             el: element,
-             useAsButton: true,
-             default: element.value,
-             theme: 'nano',     
-             components: {
-                 preview: true,
-                 opacity: true,
-                 hue: true,
-     
-                 interaction: {
-                 hex: false,
-                 rgba: true,
-                 hsva: false,
-                 input: true,
-                 save: true
-                 }
-             }
-             }).on('init', pickr => {       
-                 let currentColor = element.value
-                 element.value = pickr.getSelectedColor().toRGBA().toString(0)
-                 element.style.backgroundColor =  currentColor                
-             }).on('save', color => {
-                 let pickedColor = pickr.getSelectedColor().toRGBA().toString(0)
-                 element.value = pickedColor
-                 element.style.backgroundColor = pickedColor
-                pickr.hide();
-
-             }).on('hide', color => {
-                let pickedColor = pickr.getColor().toRGBA().toString(0)
-                element.value = pickedColor
-                element.style.backgroundColor = pickedColor        
-            })    
-             
-         })
-}
-
-
-    // localstorage check
-    if (!getDataFromStorage(`${storagePrefix}list`)) {
-        let list = [{ "firstField": "Jon Doe", "secondField": "Have a nice day", "higlight": false }]
-        saveInStorage(`${storagePrefix}list`, list)
-    }
-
-    if (!getDataFromStorage(`${storagePrefix}fields`)) {
-        let fields = { "firstFieldName": "Requester", "secondFieldName": "Music", "higlight": "Extreme", "title": "Musics" }
-        saveInStorage(`${storagePrefix}fields`, fields)
-    }       
-
-    if (!getDataFromStorage(`${storagePrefix}overlayOptions`)) {        
-        saveInStorage(`${storagePrefix}overlayOptions`, overlayOptions)
-    }   
+   
 
    
     updatePanelInterface()
-    //localStorage.clear()
+    loadColorPicker()
+   // localStorage.clear()
 }
