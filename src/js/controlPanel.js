@@ -6,20 +6,33 @@ window.onload = () => {
                 "screenBgcolor": "rgba(0,0,0,0)",
             },
             "list":{
-                "listWidht": 1920,
-                "listHeight": 1080,
-                "listBgColor": "rgba(0,0,0,0)",
-                "listColumnPosition": "center",
-                "listLinePosition": "top"
+                "listWidht": 500,
+                "listHeight": 700,
+                "listBgColor": "rgba(211, 118, 177, 1)",
+                "listColumnPosition": "flex-start",
+                "listLinePosition": "flex-start",
+                "marginTop": 0,
+                "marginBottom": 0,
+                "marginLeft": 0,
+                "marginRight":0,
+            },
+            "listHeader":{
+               "showListHeader": true,
+               "listHeaderName1": "Requester",
+               "listHeaderName2": "Music",
+               "listHeaderFontSize": 18,
+               "listHeaderFontColor": "rgba(255, 255, 255, 1)",
+               "listHeaderBgColor":  "rgba(36, 176, 237, 1)"
             },
             "listTitle":{
                 "showTitle": true,
                 "titleText": "Musics",
                 "titleFontSize": 20,
-                "titleFontColor": "rgba(163,227,255,1)",
-                "titleBgColor": "rgba(0,0,0,0)"
+                "titleFontColor": "rgba(176, 197, 207, 1)",
+                "titleBgColor": "rgba(0,0,0,1)"
             },
             "listItems":{
+                "showIndex": true,
                 "itemsDefaultColor":"rgba(0,0,0,1)",
                 "itemsFontSize": 18
             },
@@ -33,16 +46,14 @@ window.onload = () => {
         const storagePrefix = 'LO_'
         const tabComunication = new BroadcastChannel(`${storagePrefix}tabComunication`)
         const elementColorPicker = document.querySelectorAll('.pickr')
-        
-
         const menuItems = document.querySelectorAll('.menu-item')
+        
         var bodySections = document.querySelectorAll('section')
         var allInputs = document.querySelectorAll('.check-change')
 
         // add item page
         var addItemFieldName_1 = document.querySelector('#first-field-name')
-        var addItemFieldName_2 = document.querySelector('#second-field-name')
-        var addHiglightSwitch = document.querySelector('#add-higlight-switch')
+        var addItemFieldName_2 = document.querySelector('#second-field-name')        
         var btn_addListItem = document.querySelector('#show-options-add-item')       
 
         // list page
@@ -50,8 +61,7 @@ window.onload = () => {
         var listHeadSecondField = document.querySelector('#list-head-second-field')
         var listHeadHiglightField = document.querySelector('#list-head-higlight-field')
         var listTitle = document.querySelector('#list-title')
-
-
+        
         // options page        
         // screen
         var screenWidth = () => document.querySelector('#options-change-screen-width')
@@ -64,6 +74,10 @@ window.onload = () => {
         var listBgColor = () => document.querySelector('#options-change-list-bg-color')
         var listVerticalPosition = () => document.querySelector('#options-list-vertical-position')
         var listHorizontalPosition = () => document.querySelector('#options-list-horizontal-position')
+        var listMarginTop = () => document.querySelector('#options-list-margin-top')
+        var listMarginbottom = () => document.querySelector('#options-list-margin-bottom')
+        var listMarginRight = () => document.querySelector('#options-list-margin-right')
+        var listMarginLeft = () => document.querySelector('#options-list-margin-left')
 
         // list title 
         var activeTitle = () => document.querySelector('#options-list-title-active')
@@ -72,34 +86,31 @@ window.onload = () => {
         var titleFontColor = () => document.querySelector('#options-change-list-title-font-color')
         var titleBgColor = () => document.querySelector('#options-change-list-title-bg-color')
 
+        // list header
+        var activeListHeader = () => document.querySelector('#options-list-header-active')
+        var listHeaderName1 = () => document.querySelector('#options-change-list-header-name1')
+        var listHeaderName2 = () => document.querySelector('#options-change-list-header-name2')
+        var listHeaderFontSize = () => document.querySelector('#options-change-list-header-font-size')
+        var listHeaderFontColor = () => document.querySelector('#options-list-header-font-color')
+        var listHeaderBgColor = () => document.querySelector('#options-list-header-bg-color')
+        
         // list items
+        var activeListIndex = () => document.querySelector('#options-list-header-show-index')
         var itemDefaultColor = () => document.querySelector('#options-change-list-item-color')
         var itemFontSize = () => document.querySelector('#options-list-item-font-size')
 
         // higlight
         var higlightFontSize = () => document.querySelector('#options-higlight-font-size')
         var higlightFontColor = () => document.querySelector('#options-higlight-font-color')
-        var higlightBgColor = () => document.querySelector('#options-higlight-bg-color')
-
-        // fields
-        var optionsLabelField1 = () => document.querySelector('#options-lb-field-1 span')
-        var optionsLabelField2 = () => document.querySelector('#options-lb-field-2 span')
-        var optionsLabelHiglight = () => document.querySelector('#options-lb-higlight span')
-        var newFieldName1 = () => document.querySelector('#options-change-field-1')
-        var newFieldName2 = () => document.querySelector('#options-change-field-2')
-        var newFielHiglight = () => document.querySelector('#options-change-higlight')
-        var btn_optionsChange = document.querySelector('#options-change-fields')
-
+        var higlightBgColor = () => document.querySelector('#options-higlight-bg-color')   
+        
         function updatePanelInterface() {
-            let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
-            let { firstFieldName, secondFieldName, higlight } = getDataFromStorage(`${storagePrefix}fields`)
-            console.log(options)
+            let options = getDataFromStorage(`${storagePrefix}overlayOptions`)           
+            
             // add item page
-            addItemFieldName_1.textContent = firstFieldName
-            addItemFieldName_2.textContent = secondFieldName
-            addHiglightSwitch.textContent = higlight
-
-            // options page //            
+            addItemFieldName_1.textContent = options.listHeader.listHeaderName1
+            addItemFieldName_2.textContent = options.listHeader.listHeaderName2
+                       
             screenWidth().value = options.screen.screenWidth
             screenHeight().value = options.screen.screenHeight
             screenBgColor().value = options.screen.screenBgcolor
@@ -109,51 +120,42 @@ window.onload = () => {
             listBgColor().value = options.list.listBgColor 
             listVerticalPosition().value = options.list.listColumnPosition 
             listHorizontalPosition().value = options.list.listLinePosition 
-                                        
+            listMarginTop().value = options.list.marginTop
+            listMarginbottom().value = options.list.marginBottom
+            listMarginRight().value = options.list.marginRight
+            listMarginLeft().value = options.list.marginLeft
+
             activeTitle().checked = options.listTitle.showTitle 
             titleText().value = options.listTitle.titleText 
             titleFontSize().value = options.listTitle.titleFontSize 
             titleFontColor().value = options.listTitle.titleFontColor 
             titleBgColor().value = options.listTitle.titleBgColor
 
+            activeListHeader().checked = options.listHeader.showListHeader
+            listHeaderName1().value = options.listHeader.listHeaderName1
+            listHeaderName2().value = options.listHeader.listHeaderName2
+            listHeaderFontSize().value = options.listHeader.listHeaderFontSize
+            listHeaderFontColor().value = options.listHeader.listHeaderFontColor
+            listHeaderBgColor().value =  options.listHeader.listHeaderBgColor    
+            
+            activeListIndex().checked = options.listItems.showIndex
             itemDefaultColor().value = options.listItems.itemsDefaultColor
             itemFontSize().value = options.listItems.itemsFontSize 
             
             higlightFontSize().value = options.higlight.higlightFontSize 
             higlightFontColor().value = options.higlight.higlightFontColor
-            higlightBgColor().value = options.higlight.higlightBgColor
-
-
-            optionsLabelField1().innerHTML = firstFieldName
-            optionsLabelField2().innerHTML = secondFieldName
-            optionsLabelHiglight().innerHTML = higlight
-
+            higlightBgColor().value = options.higlight.higlightBgColor            
 
             // list page
-            listHeadFirstField.textContent = firstFieldName
-            listHeadSecondField.textContent = secondFieldName
-            listTitle.textContent = options.listTitle.titleText
-                //listHeadHiglightField.textContent = higlight
-
-            
-            
+            listHeadFirstField.textContent = options.listHeader.listHeaderName1
+            listHeadSecondField.textContent = options.listHeader.listHeaderName2           
+                     
             showListItems()
             
         }
-
-
-        btn_optionsChange.onclick = event => {
-            event.preventDefault()
-
-            saveChangedOptions()            
-        }
-
-
-
+        
         function saveChangedOptions(){
-            let options = overlayOptions
-            
-            
+            let options = overlayOptions           
 
             options.screen.screenWidth = screenWidth().value
             options.screen.screenHeight = screenHeight().value
@@ -164,6 +166,10 @@ window.onload = () => {
             options.list.listBgColor = listBgColor().value
             options.list.listColumnPosition = listVerticalPosition().value
             options.list.listLinePosition = listHorizontalPosition().value 
+            options.list.marginTop = listMarginTop().value 
+            options.list.marginBottom = listMarginbottom().value
+            options.list.marginRight = listMarginRight().value
+            options.list.marginLeft = listMarginLeft().value
 
             options.listTitle.showTitle = activeTitle().checked
             options.listTitle.titleText = titleText().value
@@ -171,22 +177,22 @@ window.onload = () => {
             options.listTitle.titleFontColor = titleFontColor().value
             options.listTitle.titleBgColor = titleBgColor().value
 
+            options.listHeader.showListHeader = activeListHeader().checked
+            options.listHeader.listHeaderName1 = listHeaderName1().value 
+            options.listHeader.listHeaderName2 = listHeaderName2().value
+            options.listHeader.listHeaderFontSize = listHeaderFontSize().value
+            options.listHeader.listHeaderFontColor = listHeaderFontColor().value
+            options.listHeader.listHeaderBgColor = listHeaderBgColor().value 
+
+            options.listItems.showIndex = activeListIndex().checked
             options.listItems.itemsDefaultColor = itemDefaultColor().value
             options.listItems.itemsFontSize = itemFontSize().value 
 
             options.higlight.higlightFontSize = higlightFontSize().value
             options.higlight.higlightFontColor = higlightFontColor().value
-            options.higlight.higlightBgColor = higlightBgColor().value           
+            options.higlight.higlightBgColor = higlightBgColor().value       
             
-
-            saveInStorage(`${storagePrefix}overlayOptions`, options)
-
-           
-            updateFieldsName(
-                newFieldName1().value, 
-                newFieldName2().value, 
-                newFielHiglight().value
-            )
+            saveInStorage(`${storagePrefix}overlayOptions`, options)            
 
             updatePanelInterface()
 
@@ -219,16 +225,18 @@ window.onload = () => {
 
         }
 
-
         btn_addListItem.onclick = event => {
             event.preventDefault()
+            let higlightSwitch = () => document.querySelector('#higlight-switch') 
             let firstField = document.querySelector('#add-item-field-1').value
             let secondField = document.querySelector('#add-item-field-2').value
-            document.querySelector('#higlight-switch:checked') ? higlight = true : higlight = false
+            higlightSwitch().checked ? higlight = true : higlight = false
             if (firstField != '' || secondField != '') {
                 addItemToList(firstField, secondField, higlight)
                 showSelectedMenu('show-list')
             }
+
+            higlightSwitch().checked = false
         }
 
         function showListItems() {
@@ -254,18 +262,6 @@ window.onload = () => {
         deleteControl()
         changeItem()
     }
-
-    function updateFieldsName(firstFieldName, secondFieldName, higlight) {
-        if( firstFieldName == '' || secondFieldName == '' || higlight  == ''){
-            return false
-        }
-
-        let newFieldsName = { firstFieldName, secondFieldName, higlight }
-        saveInStorage(`${storagePrefix}fields`, newFieldsName)
-        updatePanelInterface()
-        tabComunication.postMessage({"fieldsName": true})
-    }
-
 
     function changeItemPosition(index, action) {
         index = parseInt(index)
@@ -343,8 +339,6 @@ window.onload = () => {
         }
     })
 
-    
-
     // color picker
     function loadColorPicker(){
         elementColorPicker.forEach( element =>{
@@ -392,12 +386,7 @@ window.onload = () => {
     if (!getDataFromStorage(`${storagePrefix}list`)) {
         let list = [{ "firstField": "Jon Doe", "secondField": "Have a nice day", "higlight": false }]
         saveInStorage(`${storagePrefix}list`, list)
-    }
-
-    if (!getDataFromStorage(`${storagePrefix}fields`)) {
-        let fields = { "firstFieldName": "Requester", "secondFieldName": "Music", "higlight": "Extreme"}
-        saveInStorage(`${storagePrefix}fields`, fields)
-    }       
+    }           
 
     if (!getDataFromStorage(`${storagePrefix}overlayOptions`)) {        
         saveInStorage(`${storagePrefix}overlayOptions`, overlayOptions)
@@ -430,13 +419,7 @@ window.onload = () => {
             console.log(error)
         }
     }
-
-    
-
-   
-
-   
+  
     updatePanelInterface()
-    loadColorPicker()
-   // localStorage.clear()
+    loadColorPicker()    
 }

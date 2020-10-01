@@ -1,4 +1,48 @@
 window.onload = () => {
+    //keep a redundance to prevent crash when user start overlay before control panel 
+    const  overlayOptions = {
+        "screen":{
+            "screenWidth": 1920,
+            "screenHeight": 1080,
+            "screenBgcolor": "rgba(0,0,0,0)",
+        },
+        "list":{
+            "listWidht": 500,
+            "listHeight": 700,
+            "listBgColor": "rgba(211, 118, 177, 1)",
+            "listColumnPosition": "flex-start",
+            "listLinePosition": "flex-start",
+            "marginTop": 0,
+            "marginBottom": 0,
+            "marginLeft": 0,
+            "marginRight":0,
+        },
+        "listHeader":{
+           "showListHeader": true,
+           "listHeaderName1": "Requester",
+           "listHeaderName2": "Music",
+           "listHeaderFontSize": 18,
+           "listHeaderFontColor": "rgba(255, 255, 255, 1)",
+           "listHeaderBgColor":  "rgba(36, 176, 237, 1)"
+        },
+        "listTitle":{
+            "showTitle": true,
+            "titleText": "Musics",
+            "titleFontSize": 20,
+            "titleFontColor": "rgba(176, 197, 207, 1)",
+            "titleBgColor": "rgba(0,0,0,1)"
+        },
+        "listItems":{
+            "showIndex": true,
+            "itemsDefaultColor":"rgba(0,0,0,1)",
+            "itemsFontSize": 18
+        },
+        "higlight":{
+            "higlightFontSize": 20,
+            "higlightFontColor": "rgba(255,23,229,1)",
+            "higlightBgColor": "rgba(227,255,0,1)",
+        }
+    }
     const storagePrefix = 'LO_'
     const tabComunication = new BroadcastChannel(`${storagePrefix}tabComunication`)
 
@@ -8,26 +52,24 @@ window.onload = () => {
     var listSecondField = document.querySelector('#list-head-second-field')
     var tableBody = document.querySelector('#list-body')
     var tableContainer = document.querySelector('#table-container')
+    var tableHeader = document.querySelector('thead')
+    var listIndex = () => document.querySelectorAll('.list-header-index')    
     var higlights = () => document.querySelectorAll('.higlight')
-    var listItens = () => document.querySelectorAll('.list-item')
-
-    
+    var listItens = () => document.querySelectorAll('.list-item')    
 
     function drawOverlayList() {    
         let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
-        let list = getDataFromStorage(`${storagePrefix}list`)
-        let { firstFieldName, secondFieldName } = getDataFromStorage(`${storagePrefix}fields`) 
-        let tableBodyHTML = ``       
+        let list = getDataFromStorage(`${storagePrefix}list`)        
+        let tableBodyHTML = ``    
 
         listTitle.textContent = options.listTitle.titleText
-        listFirstField.textContent = firstFieldName
-        listSecondField.textContent = secondFieldName 
-        
+        listFirstField.textContent = options.listHeader.listHeaderName1
+        listSecondField.textContent = options.listHeader.listHeaderName2        
         
         list.forEach( (listItem, index ) => {
             tableBodyHTML += `
                 <tr class="list-item ${listItem.higlight ? 'higlight' : ''}">
-                    <th scope="row">${parseInt(index) +1}</th>                     
+                    <th class="list-header-index" scope="row">${parseInt(index) +1}</th>                     
                     <td>${listItem.firstField}</td>
                     <td>${listItem.secondField}</td>                    
                 </tr>            
@@ -39,12 +81,8 @@ window.onload = () => {
         applyStyle()
     }
 
-
-
-    function applyStyle(){      
-
-        let options = getDataFromStorage(`${storagePrefix}overlayOptions`)
-               
+    function applyStyle(){
+        let options = getDataFromStorage(`${storagePrefix}overlayOptions`)               
  
         // container
         mainContainer.style.maxWidth = `${options.screen.screenWidth}px`
@@ -57,39 +95,56 @@ window.onload = () => {
         tableContainer.style.width = `${options.list.listWidht}px`
         tableContainer.style.height = `${options.list.listHeight}px`
         tableContainer.style.backgroundColor = options.list.listBgColor
-        //use main but set table container
+        tableContainer.style.marginTop = `${options.list.marginTop}px`
+        tableContainer.style.marginBottom = `${options.list.marginBottom}px`
+        tableContainer.style.marginRight = `${options.list.marginRight}px`
+        tableContainer.style.marginLeft = `${options.list.marginLeft}px`
+        // use main but set table container
         mainContainer.style.justifyContent = options.list.listColumnPosition
         mainContainer.style.alignItems = options.list.listLinePosition
 
-
         listItens().forEach(element =>{
             element.style.color = options.listItems.itemsDefaultColor
-        })       
+        })  
+        
+        listIndex().forEach( element =>{
+            options.listItems.showIndex? element.style.display = 'block': element.style.display = 'none'           
+        })
+        
        tableBody.style.fontSize = `${options.listItems.itemsFontSize}pt`
 
-
-       higlights().forEach(element =>{
-        element.style.fontSize = `${options.higlight.higlightFontSize}pt` 
-        element.style.color = options.higlight.higlightFontColor
-        element.style.backgroundColor  = options.higlight.higlightBgColor
-    })
-
-
-       
-    
-        
-       // console.log()
-       
+        higlights().forEach(element =>{
+            element.style.fontSize = `${options.higlight.higlightFontSize}pt` 
+            element.style.color = options.higlight.higlightFontColor
+            element.style.backgroundColor  = options.higlight.higlightBgColor
+        })
 
         // title
         options.listTitle.showTitle? listTitle.style.display = 'block':  listTitle.style.display = 'none'
         listTitle.style.backgroundColor =  options.listTitle.titleBgColor
         listTitle.style.fontSize =  `${options.listTitle.titleFontSize }pt`
         listTitle.style.color =  options.listTitle.titleFontColor
-       // listTitle.style.padding =  `${titlePadding}px`       
+       
+        // list header
+        options.listHeader.showListHeader? tableHeader.style.visibility = 'visible' : tableHeader.style.visibility  = 'collapse'       
+        tableHeader.style.fontSize = `${options.listHeader.listHeaderFontSize}pt`
+        tableHeader.style.color = options.listHeader.listHeaderFontColor
+        tableHeader.style.backgroundColor = options.listHeader.listHeaderBgColor
+    }  
+
+    function saveInStorage(name, data) {
+        try {
+            localStorage.setItem(name, JSON.stringify(data))
+
+            if (localStorage.getItem(name)) {
+                return true
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
-
-
     function getDataFromStorage(name) {
         try {
             if (localStorage.getItem(name)) {
@@ -103,13 +158,21 @@ window.onload = () => {
         }
     }
 
-    tabComunication.onmessage = function(e) {
-       let type = e.data.type
-       drawOverlayList()
-        console.log(type)
-    };
-   
+    if (!getDataFromStorage(`${storagePrefix}list`)) {
+        let list = [{ "firstField": "Jon Doe", "secondField": "Have a nice day", "higlight": false }]
+        saveInStorage(`${storagePrefix}list`, list)
+    }           
 
+    if (!getDataFromStorage(`${storagePrefix}overlayOptions`)) {        
+        saveInStorage(`${storagePrefix}overlayOptions`, overlayOptions)
+    }
+
+    tabComunication.onmessage = function(e) {
+        let type = e.data.type
+        drawOverlayList()
+         console.log(type)
+     }; 
+    
+    drawOverlayList()    
     //localStorage.clear()
-    drawOverlayList()   
 }
