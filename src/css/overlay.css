@@ -2,7 +2,7 @@
 #main-container{
     display: flex;    
 }
-#main-container div.table-responsive{
+#main-container div.table-responsive{ 
     overflow: hidden !important;
 }
 #table-container table{

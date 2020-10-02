@@ -6,7 +6,7 @@ window.onload = () => {
             "screenHeight": 1080,
             "screenBgcolor": "rgba(0,0,0,0)",
         },
-        "list":{
+        "list":{ 
             "listWidht": 500,
             "listHeight": 700,
             "listBgColor": "rgba(211, 118, 177, 1)",
