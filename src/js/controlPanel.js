@@ -303,10 +303,11 @@ window.onload = () => {
     function removeItemFromList(index) {
         let list = getDataFromStorage("LO_list")
         list.splice(index, 1)
-        saveInStorage(`${storagePrefix}list`, list)
+        //saveInStorage(`${storagePrefix}list`, list)
         showListItems()
         tabComunication.postMessage({
-            "type": "updateoverlay"
+            "type": "deleteItem",
+            "index": index 
         })
     }
 

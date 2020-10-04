@@ -169,8 +169,25 @@ window.onload = () => {
 
     tabComunication.onmessage = function(e) {
         let type = e.data.type
-        drawOverlayList()
-         console.log(type)
+        let index = e.data.index
+
+        if( type == 'deleteItem' ){            
+            listItens().forEach((item, listPosition) => {
+                if( parseInt(listPosition) === parseInt(index) ){                    
+                    item.classList.add('to-remove')
+                    setTimeout(() => drawOverlayList(),1000)
+                }
+            })
+            
+            //console.log(index, toDelete) 
+            
+            
+        }
+        
+        if( type == 'updateoverlay' ){
+            drawOverlayList()   
+        }
+         
      }; 
     
     drawOverlayList()    

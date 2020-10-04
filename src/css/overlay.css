@@ -18,3 +18,22 @@
 .list-item{
     font-weight: bolder;
 }
+
+.to-remove{
+    background-color: red !important; 
+    transition: .3s;  
+    animation-name: removeitem;
+    animation-duration: 3s;   
+    animation-timing-function: cubic-bezier(.22,-0.61,.11,1.31);
+
+
+}
+@keyframes removeitem {
+    0% {
+     transform: translateX(0);      
+    }  
+    100% {
+    transform: translateX(1000px);
+     
+    }
+  }
