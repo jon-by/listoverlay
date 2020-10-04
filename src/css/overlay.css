@@ -19,8 +19,29 @@
     font-weight: bolder;
 }
 
+.higlight{
+    z-index: 100 !important;
+}
+.higlight::after{
+    content: 'Extreme';
+    color: rgb(255, 255, 255);
+    position: absolute;
+    font-size: 15pt;
+    transform: rotate(-20deg);
+    margin-left: -44px;
+    margin-top: 2px;
+    background-color: #0cd309;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, .5);
+    
+}
+    
+    
+
+
 .to-remove{
-    background-color: red !important; 
+    background-color: rgb(197, 60, 60) !important; 
     transition: .3s;  
     animation-name: removeitem;
     animation-duration: 3s;   
@@ -28,12 +49,52 @@
 
 
 }
+
+.go-down{
+    transition: .3s;  
+    animation-name: go-down;
+    animation-duration: 1s;   
+    animation-timing-function: cubic-bezier(.22,-0.61,.11,1.31);
+}
+
+.go-up{     
+    transition: .3s;  
+    animation-name: go-up;
+    animation-duration: 1s;   
+    animation-timing-function: cubic-bezier(.22,-0.61,.11,1.31);
+}
 @keyframes removeitem {
     0% {
-     transform: translateX(0);      
+     transform: translateX(0); 
+             
     }  
     100% {
     transform: translateX(1000px);
+    
      
     }
   }
+
+
+  @keyframes go-up{
+      0%{
+        transform: translateY(0);
+        
+      }
+      100% {
+        transform: translateY(-35px);
+        
+        }
+  }
+
+  @keyframes go-down{
+    0%{
+      transform: translateY(0);
+       
+    }
+    100% {
+      transform: translateY(35px);
+       
+       
+      }
+}

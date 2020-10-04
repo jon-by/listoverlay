@@ -282,10 +282,11 @@ window.onload = () => {
         }
 
         saveInStorage(`${storagePrefix}list`, list)
-        updatePanelInterface()
-        
+        updatePanelInterface()        
         tabComunication.postMessage({
-            "type": "updateoverlay"
+            "type": "changePosition",
+            "action":action,
+            "index": index
         })
     }
 
@@ -303,7 +304,7 @@ window.onload = () => {
     function removeItemFromList(index) {
         let list = getDataFromStorage("LO_list")
         list.splice(index, 1)
-        //saveInStorage(`${storagePrefix}list`, list)
+        saveInStorage(`${storagePrefix}list`, list)
         showListItems()
         tabComunication.postMessage({
             "type": "deleteItem",

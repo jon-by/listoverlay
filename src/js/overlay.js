@@ -169,27 +169,57 @@ window.onload = () => {
 
     tabComunication.onmessage = function(e) {
         let type = e.data.type
-        let index = e.data.index
-
-        if( type == 'deleteItem' ){            
-            listItens().forEach((item, listPosition) => {
-                if( parseInt(listPosition) === parseInt(index) ){                    
-                    item.classList.add('to-remove')
-                    setTimeout(() => drawOverlayList(),1000)
-                }
-            })
-            
-            //console.log(index, toDelete) 
-            
-            
-        }
         
+
+        if( type == 'deleteItem' ){ 
+            let index = e.data.index           
+            listItens()[index].classList.add('to-remove')
+            setTimeout(() => drawOverlayList(),1000)    
+        }        
+        
+        if( type == 'changePosition' ){
+
+            animateChangePosition(e.data)
+        }
         if( type == 'updateoverlay' ){
             drawOverlayList()   
         }
          
-     }; 
+     }
+
+     function animateChangePosition(type){
+        let { action, index } = type
+        index = parseInt(index)
+        let itens = listItens()
+
+        if (action == 'up') {
+            if (typeof(itens[index -1]) !== 'undefined') {
+                //console.log('deu')
+               itens[index].classList.add('go-up')
+               itens[index - 1].classList.add('go-down')
+
+
+            }
+        }
+
+        if (action == 'down') {
+            if (typeof(itens[index +1]) !== 'undefined') {
+                //console.log('deu')
+               itens[index].classList.add('go-down')
+               itens[index + 1].classList.add('go-up')
+
+
+            }
+        }
+        setTimeout(() => {
+            drawOverlayList()
+            listItens().forEach( item =>{
+                item.classList.remove('go-down')
+                item.classList.remove('go-up')
+            }) 
+        }, 600)
+     }
     
-    drawOverlayList()    
+    drawOverlayList()   
     //localStorage.clear()
 }
